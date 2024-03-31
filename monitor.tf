@@ -74,3 +74,32 @@ resource "datadog_monitor" "latency" {
   }
 }
 
+resource "datadog_monitor" "query_latency" {
+  evaluation_delay    = 0
+  include_tags        = false
+  message             = <<-EOT
+                            ### アラート内容
+                            {{#is_warning}}
+                            - {{service_name}} のクエリのレイテンシーが3秒超過
+                            {{/is_warning}}
+                            {{#is_alert}}
+                            - {{service_name}} のクエリのレイテンシーが5秒超過
+                            {{/is_alert}}
+                          EOT
+  name                = "クエリ監視"
+  new_group_delay     = 0
+  no_data_timeframe   = 0
+  notify_audit        = false
+  notify_by           = []
+  notify_no_data      = false
+  priority            = 0
+  query               = "avg(last_5m):avg:trace.mysql.query.duration{*} > 5"
+  require_full_window = false
+
+  type = "query alert"
+  monitor_thresholds {
+    critical = "5"
+    warning  = "3"
+  }
+}
+
