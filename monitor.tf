@@ -76,7 +76,7 @@ resource "datadog_monitor" "latency" {
 
 resource "datadog_monitor" "query_latency" {
   evaluation_delay    = 0
-  include_tags        = false
+  include_tags        = true
   message             = <<-EOT
                             ### アラート内容
                             {{#is_warning}}
@@ -95,6 +95,9 @@ resource "datadog_monitor" "query_latency" {
   priority            = 0
   query               = "avg(last_5m):avg:trace.mysql.query.duration{*} > 5"
   require_full_window = false
+  tags = [
+    "service:<service_name>"
+  ]
 
   type = "query alert"
   monitor_thresholds {
