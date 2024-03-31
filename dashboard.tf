@@ -1,8 +1,8 @@
 resource "datadog_dashboard" "ecs" {
-  description      = "[[suggested_dashboards]]"
-  layout_type      = "ordered"
-  reflow_type      = "auto"
-  title            = "ECS Containers dashboard"
+  description = "[[suggested_dashboards]]"
+  layout_type = "ordered"
+  reflow_type = "auto"
+  title       = "ECS Containers dashboard"
 
   widget {
     timeseries_definition {
@@ -195,7 +195,7 @@ resource "datadog_dashboard" "ecs" {
           }
         }
         style {
-          palette    = "warm"
+          palette = "warm"
         }
       }
     }
